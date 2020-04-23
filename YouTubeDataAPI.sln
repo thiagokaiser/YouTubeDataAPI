@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "YouTubeDataAPI\Api.csproj", "{3B6A8EC6-71BB-4AEB-A0F2-AE2D69D6FC9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{3770B70F-CF38-4217-ADCE-C6BB18FEFF5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{474F54C7-0044-4F51-B555-C0CCA23F93ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B6A8EC6-71BB-4AEB-A0F2-AE2D69D6FC9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B6A8EC6-71BB-4AEB-A0F2-AE2D69D6FC9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B6A8EC6-71BB-4AEB-A0F2-AE2D69D6FC9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B6A8EC6-71BB-4AEB-A0F2-AE2D69D6FC9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3770B70F-CF38-4217-ADCE-C6BB18FEFF5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3770B70F-CF38-4217-ADCE-C6BB18FEFF5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3770B70F-CF38-4217-ADCE-C6BB18FEFF5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3770B70F-CF38-4217-ADCE-C6BB18FEFF5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{474F54C7-0044-4F51-B555-C0CCA23F93ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{474F54C7-0044-4F51-B555-C0CCA23F93ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{474F54C7-0044-4F51-B555-C0CCA23F93ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{474F54C7-0044-4F51-B555-C0CCA23F93ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {386E85D6-A2DB-4CB9-A0EF-26E92A98674F}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,21 @@
+﻿@model Core.Models.Playlist
+@{
+    ViewData["Title"] = "VideoList";
+}
+
+<h3>Playlist Detail</h3>
+
+@Model.Title
+@Model.Description
+
+<ul>
+    @if (Model.Videos?.Count > 0)
+    {
+        @foreach (var item in Model.Videos)
+        {
+            <li>@item.Title</li>
+        }
+
+    }
+</ul>
+

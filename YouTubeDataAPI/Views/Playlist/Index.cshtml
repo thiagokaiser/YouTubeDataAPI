@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Core.Models.Playlist>
+@{
+    ViewData["Title"] = "PlaylistList";
+}
+
+<h3>PlaylistList</h3>
+<a asp-action="PlaylistEdit" asp-route-id="0">Add</a>
+
+<hr />
+
+
+@foreach (var item in Model)
+{
+    <div class="card w-50">
+        <div class="card-body">
+            <h5 class="card-title">@item.Title</h5>
+            <p class="card-text">@item.Description</p>
+            <a asp-action="PlaylistDetail" asp-route-id="@item.Id" class="btn btn-sm btn-info">Videos</a>
+            <a asp-action="PlaylistEdit" asp-route-id="@item.Id" class="btn btn-sm btn-info">Edit</a>
+            <a asp-action="PlaylistDel" asp-route-id="@item.Id" class="btn btn-sm btn-info">Delete</a>
+        </div>
+    </div>
+}

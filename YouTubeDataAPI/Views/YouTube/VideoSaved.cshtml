@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Core.Models.Video>
+@{
+    ViewData["Title"] = "VideoSaved";    
+    string searchText = (string)ViewData["searchText"];
+}
+
+<div class="text-center">
+    <h3 class="">YouTube Search</h3>
+    <form action="" method="post">
+        <input asp-for=@searchText class="input-group-lg" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+<p></p>
+<a asp-action="VideoDelAll" class="btn btn-sm btn-info">Delete All</a>
+<p></p>
+<div>
+    <ul>
+        @foreach (var item in Model)
+        {
+            <div class="card w-100">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img src="@item.Url" class="img-thumbnail">
+                        </div>
+                        <div class="col-sm-8">
+                            <h6 class="card-title">@item.Title</h6>
+                            <p class="card-text">@item.Description</p>
+                            <p class="card-text">@item.PlaylistId</p>
+
+                            <a asp-action="PlaylistDetail" asp-route-id="0" class="btn btn-sm btn-info">Add to Playlist</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </ul>
+</div>
