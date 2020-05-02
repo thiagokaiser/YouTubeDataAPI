@@ -54,7 +54,6 @@ namespace Infrastructure.Repositories
                 var videos = await conexao.QueryAsync<Core.Models.Video>("SELECT * FROM Video");
                 return videos;
             }
-
         }
 
         public async Task VideoDelAll()

@@ -12,7 +12,6 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
 using Core.Services;
 using Core.Interfaces;
-using Api.Apis;
 using Infrastructure.Repositories;
 
 namespace YouTubeDataAPI
@@ -42,8 +41,7 @@ namespace YouTubeDataAPI
             services.AddScoped<YoutubeService>();
             services.AddScoped<PlaylistService>();
             services.AddScoped<IRepositoryPlaylist>(x => new PlaylistRepository(connectionString));
-            services.AddScoped<IRepositoryYoutube>(x => new YoutubeRepository(connectionString));
-            services.AddScoped<YoutubeApi>();
+            services.AddScoped<IRepositoryYoutube>(x => new YoutubeRepository(connectionString));            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,22 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Core.Models;
 using Core.Services;
-using Api.Apis;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace YouTubeDataAPI.Controllers
 {
     public class YoutubeController : Controller
     {        
-        private readonly YoutubeService service;
-        private readonly YoutubeApi youtubeApi;
+        private readonly YoutubeService service;        
         private readonly PlaylistService playlistService;
 
-        public YoutubeController(YoutubeApi youtubeApi,
-                                 Core.Services.YoutubeService service,
-                                 PlaylistService playlistService)
-        {            
-            this.youtubeApi = youtubeApi;
+        public YoutubeController(Core.Services.YoutubeService service, PlaylistService playlistService)
+        {                        
             this.service = service;
             this.playlistService = playlistService;
         }
@@ -30,17 +25,14 @@ namespace YouTubeDataAPI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            
-
-            IEnumerable<Core.Models.Video> videos = new List<Core.Models.Video>();
-            
+            IEnumerable<Core.Models.Video> videos = new List<Core.Models.Video>();            
             return View(videos);
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(string searchText)
         {            
-            var videos = youtubeApi.Search(searchText);
+            var videos = service.Search(searchText);
 
             foreach (var item in videos)
             {
@@ -49,9 +41,7 @@ namespace YouTubeDataAPI.Controllers
 
             var playlists = await playlistService.PlaylistList();
             
-            ViewBag.playlists = playlists.Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Title }).ToList();         
-            
-
+            ViewBag.playlists = playlists.Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Title }).ToList();
             ViewBag.searchText = searchText;
 
             return View(videos); 
