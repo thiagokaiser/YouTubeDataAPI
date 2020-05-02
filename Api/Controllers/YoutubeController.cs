@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using YouTubeDataAPI.Models;
 using Core.Models;
 using Core.Services;
 using Api.Apis;
@@ -14,18 +13,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace YouTubeDataAPI.Controllers
 {
     public class YoutubeController : Controller
-    {
-        private readonly ILogger<YoutubeController> _logger;        
+    {        
         private readonly YoutubeService service;
         private readonly YoutubeApi youtubeApi;
         private readonly PlaylistService playlistService;
 
-        public YoutubeController(ILogger<YoutubeController> logger,                                 
-                                 YoutubeApi youtubeApi,
+        public YoutubeController(YoutubeApi youtubeApi,
                                  Core.Services.YoutubeService service,
                                  PlaylistService playlistService)
-        {
-            _logger = logger;
+        {            
             this.youtubeApi = youtubeApi;
             this.service = service;
             this.playlistService = playlistService;
@@ -34,7 +30,7 @@ namespace YouTubeDataAPI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            _logger.LogInformation("Index.Get");
+            
 
             IEnumerable<Core.Models.Video> videos = new List<Core.Models.Video>();
             
@@ -43,9 +39,7 @@ namespace YouTubeDataAPI.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Index(string searchText)
-        {
-            _logger.LogInformation("Index.Post");
-
+        {            
             var videos = youtubeApi.Search(searchText);
 
             foreach (var item in videos)
@@ -91,12 +85,6 @@ namespace YouTubeDataAPI.Controllers
         {
             await service.AddVideoToPlaylist(new Core.Models.ViewModels.VideoPlaylistViewModel() { VideoId = videoId, PlaylistId = Int32.Parse(valorSelect) });
             return RedirectToAction("Index");
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        }        
     }
 }

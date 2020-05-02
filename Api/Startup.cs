@@ -12,8 +12,8 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
 using Core.Services;
 using Core.Interfaces;
-using Repository.Postgres;
 using Api.Apis;
+using Infrastructure.Repositories;
 
 namespace YouTubeDataAPI
 {
@@ -30,11 +30,13 @@ namespace YouTubeDataAPI
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = "User ID=postgres;Password='mypass';Host=localhost;Port=5432;Database=YoutubeDB;Pooling=true;";
+            var youtubeApiKey = Configuration["Youtube:ApiKey"];
 
             services.AddControllersWithViews();
+
             services.AddScoped<YouTubeService>(x => new YouTubeService(new BaseClientService.Initializer()
                 {
-                    ApiKey = "AIzaSyDokJVFBVteDMsDYYH3Vh8UQx7Bd4eOwUM"
+                    ApiKey = youtubeApiKey
                 })                
             );            
             services.AddScoped<YoutubeService>();

@@ -7,7 +7,7 @@ using Core.Models;
 using Dapper;
 using Npgsql;
 
-namespace Repository.Postgres
+namespace Infrastructure.Repositories
 {
     public class PlaylistRepository : IRepositoryPlaylist
     {
