@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Core.Models;
 using Core.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Core.ViewModels;
 
 namespace YouTubeDataAPI.Controllers
 {
@@ -73,7 +74,7 @@ namespace YouTubeDataAPI.Controllers
 
         public async Task<IActionResult> AddVideoToPlaylist(string videoId, string valorSelect)
         {
-            await service.AddVideoToPlaylist(new Core.Models.ViewModels.VideoPlaylistViewModel() { VideoId = videoId, PlaylistId = Int32.Parse(valorSelect) });
+            await service.AddVideoToPlaylist(new VideoPlaylistViewModel() { VideoId = videoId, PlaylistId = Int32.Parse(valorSelect) });
             return RedirectToAction("Index");
         }        
     }

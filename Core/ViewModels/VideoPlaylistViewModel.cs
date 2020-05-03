@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Models.ViewModels
+namespace Core.ViewModels
 {
     public class VideoPlaylistViewModel
     {

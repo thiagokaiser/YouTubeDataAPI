@@ -6,6 +6,7 @@ using Core.Interfaces;
 using Core.Models;
 using Dapper;
 using Npgsql;
+using System.Linq;
 
 namespace Infrastructure.Repositories
 {
@@ -27,12 +28,34 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public async Task<IEnumerable<Video>> PlaylistVideosById(int id)
-        {
+        public async Task<Playlist> PlaylistVideosById(int id)
+        {            
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {
-                var videos = await conexao.QueryAsync<Video>("SELECT * FROM Video WHERE playlistid = @Id", new { Id = id });
-                return videos;
+                var query = @"
+                    SELECT * FROM playlist 
+                    INNER JOIN videoplaylist ON videoplaylist.playlistid = playlist.id 
+                    INNER JOIN video ON video.id = videoplaylist.videoid
+                    WHERE playlist.id = @Id;
+                    ";
+
+                var videos = await conexao.QueryAsync<Playlist, Video, Playlist>(query,
+                    (playlist, video) =>
+                    {
+                        playlist.Videos = playlist.Videos ?? new List<Video>();
+                        playlist.Videos.Add(video);
+                        return playlist;
+                    }, splitOn: "playlistid", param: new { Id = id });
+
+                var grouped = videos.GroupBy(o => o.Id)
+                    .Select(group =>
+                    {
+                        var combinedPlaylist = group.First();
+                        combinedPlaylist.Videos = group.Select(playlist => playlist.Videos.Single()).ToList();
+                        return combinedPlaylist;
+                    });
+
+                return grouped.First();
             }
         }
 

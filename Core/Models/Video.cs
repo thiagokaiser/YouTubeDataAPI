@@ -11,6 +11,6 @@ namespace Core.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string Url { get; set; }
-        public int PlaylistId { get; set; }
+        public List<Playlist> Playlists { get; set; }
     }
 }

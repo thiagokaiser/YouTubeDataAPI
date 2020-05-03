@@ -9,7 +9,7 @@ namespace Core.Interfaces
     public interface IRepositoryPlaylist
     {
         Task<Playlist> PlaylistById(int id);
-        Task<IEnumerable<Video>> PlaylistVideosById(int id);
+        Task<Playlist> PlaylistVideosById(int id);
         Task<IEnumerable<Playlist>> PlaylistList();
         Task VideoDel(int id);
         Task PlaylistDel(int id);

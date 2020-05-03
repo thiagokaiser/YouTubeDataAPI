@@ -1,5 +1,5 @@
 ﻿using Core.Interfaces;
-using Core.Models.ViewModels;
+using Core.ViewModels;
 using Dapper;
 using Npgsql;
 using System;

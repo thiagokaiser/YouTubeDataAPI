@@ -1,5 +1,5 @@
 ﻿using Core.Interfaces;
-using Core.Models.ViewModels;
+using Core.ViewModels;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using System;

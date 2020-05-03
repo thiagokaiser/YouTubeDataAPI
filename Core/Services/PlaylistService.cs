@@ -22,7 +22,7 @@ namespace Core.Services
             return playlist;
         }
 
-        public async Task<IEnumerable<Video>> PlaylistVideosById(int id)
+        public async Task<Playlist> PlaylistVideosById(int id)
         {
             var videos = await repository.PlaylistVideosById(id);
             return videos;

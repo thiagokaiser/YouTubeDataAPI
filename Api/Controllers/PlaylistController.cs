@@ -17,11 +17,8 @@ namespace Api.Controllers
             this.service = service;
         }
         public async Task<IActionResult> PlaylistDetail(int id)
-        {
-            var playlist = await service.PlaylistById(id);
-            var videos = await service.PlaylistVideosById(id);
-            playlist.Videos = videos.ToList();
-
+        {            
+            var playlist = await service.PlaylistVideosById(id);
             return View(playlist);
         }
         public async Task<IActionResult> Index()
