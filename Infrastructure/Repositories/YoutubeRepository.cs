@@ -68,9 +68,7 @@ namespace Infrastructure.Repositories
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {
-                await conexao.ExecuteAsync(@"UPDATE Video SET
-                                            playlistid = @PlaylistId                                            
-                                            WHERE id = @VideoId", videoPlaylistViewModel);
+                await conexao.ExecuteAsync("INSERT INTO VideoPlaylist(videoid, playlistid) VALUES(@VideoId, @PlaylistId)", videoPlaylistViewModel);
             }
         }
     }
