@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-    public interface IRepositoryYoutube
+    public interface IRepositoryVideo
     {
         Task VideoUpdate(Core.Models.Video video);
         Task VideoAdd(Core.Models.Video video);

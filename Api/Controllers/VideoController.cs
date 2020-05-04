@@ -12,12 +12,12 @@ using Core.ViewModels;
 
 namespace YouTubeDataAPI.Controllers
 {
-    public class YoutubeController : Controller
+    public class VideoController : Controller
     {        
-        private readonly YoutubeService service;        
+        private readonly VideoService service;        
         private readonly PlaylistService playlistService;
 
-        public YoutubeController(Core.Services.YoutubeService service, PlaylistService playlistService)
+        public VideoController(VideoService service, PlaylistService playlistService)
         {                        
             this.service = service;
             this.playlistService = playlistService;
@@ -26,43 +26,25 @@ namespace YouTubeDataAPI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Core.Models.Video> videos = new List<Core.Models.Video>();            
+            IEnumerable<Video> videos = new List<Video>();            
             return View(videos);
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(string searchText)
         {            
-            var videos = service.Search(searchText);
-
-            foreach (var item in videos)
-            {
-                await SaveVideo(item);
-            }
-
+            var videos = await service.Search(searchText);
             var playlists = await playlistService.PlaylistList();
             
             ViewBag.playlists = playlists.Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Title }).ToList();
             ViewBag.searchText = searchText;
 
             return View(videos); 
-        }
-        
-        public async Task SaveVideo(Core.Models.Video video)
-        {
-            if (await service.VideoById(video.Id) == null)
-            {
-                await service.VideoAdd(video);
-            }
-            else
-            {
-                await service.VideoUpdate(video);
-            }
-        }
+        }        
 
         public async Task<IActionResult> VideoSaved()
         {
-            IEnumerable<Core.Models.Video> videos = await service.VideoList();
+            IEnumerable<Video> videos = await service.VideoList();
             return View(videos);
         }
 

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public class YoutubeService
+    public class VideoService
     {
-        private readonly IRepositoryYoutube repository;
+        private readonly IRepositoryVideo repository;
         private readonly YouTubeService youTubeDataApiService;
         
-        public YoutubeService(
-            IRepositoryYoutube repository,
+        public VideoService(
+            IRepositoryVideo repository,
             YouTubeService youTubeDataApiService
             )
         {
@@ -23,17 +23,29 @@ namespace Core.Services
             this.youTubeDataApiService = youTubeDataApiService;
         }
 
-        public async Task VideoAdd(Core.Models.Video video)
+        public async Task VideoAdd(Models.Video video)
         {
             await repository.VideoAdd(video);
         }
 
-        public async Task VideoUpdate(Core.Models.Video video)
+        public async Task VideoUpdate(Models.Video video)
         {
             await repository.VideoUpdate(video);
         }
 
-        public async Task<IEnumerable<Core.Models.Video>> VideoList()
+        public async Task SaveVideo(Models.Video video)
+        {
+            if (await VideoById(video.Id) == null)
+            {
+                await VideoAdd(video);
+            }
+            else
+            {
+                await VideoUpdate(video);
+            }
+        }
+
+        public async Task<IEnumerable<Models.Video>> VideoList()
         {
             return await repository.VideoList();
         }
@@ -53,7 +65,7 @@ namespace Core.Services
             await repository.AddVideoToPlaylist(videoPlaylistViewModel);
         }
 
-        public IEnumerable<Core.Models.Video> Search(string searchText)
+        public async Task<IEnumerable<Models.Video>> Search(string searchText)
         {
             SearchResource.ListRequest listRequest = youTubeDataApiService.Search.List("snippet");
 
@@ -67,24 +79,26 @@ namespace Core.Services
 
             SearchListResponse searchResponse = listRequest.Execute();
 
-            List<Core.Models.Video> videos = new List<Core.Models.Video>();
+            List<Models.Video> videos = new List<Models.Video>();
 
             foreach (SearchResult searchResult in searchResponse.Items)
             {
                 switch (searchResult.Id.Kind)
                 {
                     case "youtube#video":
-                        videos.Add(new Core.Models.Video()
-                        {
-                            Id = searchResult.Id.VideoId,
-                            Title = searchResult.Snippet.Title,
-                            Description = searchResult.Snippet.Description,
-                            Url = searchResult.Snippet.Thumbnails.Medium.Url
-                        });
+                        var video = new Models.Video()
+                            {
+                                Id = searchResult.Id.VideoId,
+                                Title = searchResult.Snippet.Title,
+                                Description = searchResult.Snippet.Description,
+                                Url = searchResult.Snippet.Thumbnails.Medium.Url
+                            };
+
+                        videos.Add(video);
+                        await SaveVideo(video);
                         break;
                 }
             }
-
             return videos;
         }
     }

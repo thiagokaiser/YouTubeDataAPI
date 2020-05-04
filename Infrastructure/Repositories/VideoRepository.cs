@@ -1,4 +1,5 @@
 ﻿using Core.Interfaces;
+using Core.Models;
 using Core.ViewModels;
 using Dapper;
 using Npgsql;
@@ -9,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    public class YoutubeRepository : IRepositoryYoutube
+    public class VideoRepository : IRepositoryVideo
     {
         private readonly string connectionString;
 
-        public YoutubeRepository(string connectionString)
+        public VideoRepository(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public async Task VideoUpdate(Core.Models.Video video)
+        public async Task VideoUpdate(Video video)
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {
@@ -30,7 +31,7 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public async Task VideoAdd(Core.Models.Video video)
+        public async Task VideoAdd(Video video)
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {
@@ -38,16 +39,16 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public async Task<Core.Models.Video> VideoById(string id)
+        public async Task<Video> VideoById(string id)
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {                
-                var video = await conexao.QueryFirstOrDefaultAsync<Core.Models.Video>("SELECT * FROM Video WHERE id = @Id", new { Id = id });
+                var video = await conexao.QueryFirstOrDefaultAsync<Video>("SELECT * FROM Video WHERE id = @Id", new { Id = id });
                 return video;                
             }
         }
 
-        public async Task<IEnumerable<Core.Models.Video>> VideoList()
+        public async Task<IEnumerable<Video>> VideoList()
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {

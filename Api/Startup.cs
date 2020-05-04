@@ -38,10 +38,10 @@ namespace YouTubeDataAPI
                     ApiKey = youtubeApiKey
                 })                
             );            
-            services.AddScoped<YoutubeService>();
+            services.AddScoped<VideoService>();
             services.AddScoped<PlaylistService>();
             services.AddScoped<IRepositoryPlaylist>(x => new PlaylistRepository(connectionString));
-            services.AddScoped<IRepositoryYoutube>(x => new YoutubeRepository(connectionString));            
+            services.AddScoped<IRepositoryVideo>(x => new VideoRepository(connectionString));            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +68,7 @@ namespace YouTubeDataAPI
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=YouTube}/{action=Index}/{id?}");
+                    pattern: "{controller=Video}/{action=Index}/{id?}");
             });
         }
     }
