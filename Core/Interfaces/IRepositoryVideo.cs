@@ -10,7 +10,8 @@ namespace Core.Interfaces
     {
         Task VideoUpdate(Core.Models.Video video);
         Task VideoAdd(Core.Models.Video video);
-        Task<Core.Models.Video> VideoById(string id);
+        Task<Models.Video> VideoById(string id);
+        Task<Models.Video> VideoDetailById(string id);
         Task<IEnumerable<Core.Models.Video>> VideoList();
         Task VideoDelAll();
         Task AddVideoToPlaylist(VideoPlaylistViewModel videoPlaylistViewModel);

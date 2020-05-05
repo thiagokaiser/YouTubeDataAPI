@@ -5,6 +5,7 @@ using Dapper;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -48,12 +49,64 @@ namespace Infrastructure.Repositories
             }
         }
 
+        public async Task<Video> VideoDetailById(string id)
+        {
+            using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
+            {
+                var query = @"
+                    SELECT * FROM video 
+                    LEFT JOIN videoplaylist ON videoplaylist.videoid = video.id 
+                    LEFT JOIN playlist ON playlist.id = videoplaylist.playlistid
+                    WHERE video.id = @Id;
+                    ";
+
+                var playlists = await conexao.QueryAsync<Video, Playlist, Video>(query,
+                    (video, playlist) =>
+                    {
+                        video.Playlists = video.Playlists ?? new List<Playlist>();
+                        video.Playlists.Add(playlist);
+                        return video;
+                    }, splitOn: "playlistid", param: new { Id = id });
+
+                var grouped = playlists.GroupBy(o => o.Id)
+                    .Select(group =>
+                    {
+                        var combinedVideo = group.First();
+                        combinedVideo.Playlists = group.Select(video => video.Playlists.Single()).ToList();
+                        return combinedVideo;
+                    });
+
+                return grouped.First();
+            }
+        }
+
         public async Task<IEnumerable<Video>> VideoList()
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {
-                var videos = await conexao.QueryAsync<Core.Models.Video>("SELECT * FROM Video");
-                return videos;
+                var query = @"
+                    SELECT * FROM video 
+                    LEFT JOIN videoplaylist ON videoplaylist.videoid = video.id 
+                    LEFT JOIN playlist ON playlist.id = videoplaylist.playlistid;
+                    ";
+
+                var playlists = await conexao.QueryAsync<Video, Playlist, Video>(query,
+                    (video, playlist) =>
+                    {
+                        video.Playlists = video.Playlists ?? new List<Playlist>();
+                        video.Playlists.Add(playlist);
+                        return video;
+                    }, splitOn: "playlistid");
+
+                var grouped = playlists.GroupBy(o => o.Id)
+                    .Select(group =>
+                    {
+                        var combinedVideo = group.First();
+                        combinedVideo.Playlists = group.Select(video => video.Playlists.Single()).ToList();
+                        return combinedVideo;
+                    });
+
+                return grouped;
             }
         }
 

@@ -50,9 +50,14 @@ namespace Core.Services
             return await repository.VideoList();
         }
 
-        public async Task<Core.Models.Video> VideoById(string id)
+        public async Task<Models.Video> VideoById(string id)
         {
             return await repository.VideoById(id);
+        }
+
+        public async Task<Models.Video> VideoDetailById(string id)
+        {
+            return await repository.VideoDetailById(id);
         }
 
         public async Task VideoDelAll()
@@ -99,7 +104,17 @@ namespace Core.Services
                         break;
                 }
             }
-            return videos;
+            return await LoadPlaylistsInVideo(videos);
+        }
+
+        private async Task<IEnumerable<Models.Video>> LoadPlaylistsInVideo(IEnumerable<Models.Video> videos)
+        {
+            var resultVideos = new List<Models.Video>();
+            foreach (var video in videos)
+            {
+                resultVideos.Add(await repository.VideoDetailById(video.Id));
+            }
+            return resultVideos;
         }
     }
 }

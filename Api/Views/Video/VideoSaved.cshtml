@@ -27,8 +27,12 @@
                         <div class="col-sm-8">
                             <h6 class="card-title">@item.Title</h6>
                             <p class="card-text">@item.Description</p>
-                            <p class="card-text"></p>
-
+                            <p class="card-text">Playlists: 
+                                @foreach (var playlist in item.Playlists)
+                                {
+                                    <span class="text-info">@playlist.Title</span>
+                                }
+                            </p>
                             <a asp-action="PlaylistDetail" asp-route-id="0" class="btn btn-sm btn-info">Add to Playlist</a>
                         </div>
                     </div>

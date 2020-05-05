@@ -26,7 +26,7 @@ namespace YouTubeDataAPI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Video> videos = new List<Video>();            
+            var videos = new List<Video>();            
             return View(videos);
         }
 
@@ -40,11 +40,18 @@ namespace YouTubeDataAPI.Controllers
             ViewBag.searchText = searchText;
 
             return View(videos); 
-        }        
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VideoDetail()
+        {
+            var videos = await service.VideoDetailById("UT66HeAptww");
+            return Ok(videos);
+        }
 
         public async Task<IActionResult> VideoSaved()
         {
-            IEnumerable<Video> videos = await service.VideoList();
+            var videos = await service.VideoList();
             return View(videos);
         }
 
