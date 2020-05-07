@@ -1,5 +1,6 @@
 ﻿using Core.Models;
 using Core.Services;
+using Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -27,13 +28,7 @@ namespace Api.Controllers
         {
             var playlists = await service.PlaylistList();
             return View(playlists);
-        }
-
-        public async Task<IActionResult> VideoDel(int id)
-        {
-            await service.VideoDel(id);
-            return RedirectToAction("Index");
-        }
+        }        
 
         public async Task<IActionResult> PlaylistDel(int id)
         {
@@ -60,8 +55,9 @@ namespace Api.Controllers
             return View(playlist);
         }        
 
-        public IActionResult RemoveVideoFromPlaylist()
+        public async Task<IActionResult> RemoveVideoFromPlaylist(string videoId, int playlistId)
         {
+            await service.RemoveVideoFromPlaylist(new VideoPlaylistViewModel() { PlaylistId = playlistId, VideoId = videoId });
             return RedirectToAction("Index");
         }
     }

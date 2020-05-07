@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces;
 using Core.Models;
+using Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,9 +35,9 @@ namespace Core.Services
             return playlists;
         }
 
-        public async Task VideoDel(int id)
+        public async Task RemoveVideoFromPlaylist(VideoPlaylistViewModel videoPlaylist)
         {
-            await repository.VideoDel(id);
+            await repository.RemoveVideoFromPlaylist(videoPlaylist);
         }
 
         public async Task PlaylistDel(int id)

@@ -7,6 +7,7 @@ using Core.Models;
 using Dapper;
 using Npgsql;
 using System.Linq;
+using Core.ViewModels;
 
 namespace Infrastructure.Repositories
 {
@@ -68,12 +69,12 @@ namespace Infrastructure.Repositories
             }
         }
 
-        public async Task VideoDel(int id)
+        public async Task RemoveVideoFromPlaylist(VideoPlaylistViewModel videoPlaylist)
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {
-                var playlist = await conexao.ExecuteAsync(@"DELETE FROM Playlist                                                          
-                                                             WHERE id = @Id", new { Id = id });
+                var playlist = await conexao.ExecuteAsync(@"DELETE FROM videoplaylist                                                          
+                                                             WHERE videoid = @VideoId AND playlistid = @PlaylistId", videoPlaylist);
             }
 
         }

@@ -1,6 +1,6 @@
 ﻿@model Core.Models.Playlist
 @{
-    ViewData["Title"] = "VideoList";
+    ViewData["Title"] = "VideoList";    
 }
 
 <h3>Playlist Detail</h3>
@@ -21,10 +21,18 @@
                         </div>
                         <div class="col-sm-8">
                             <h6 class="card-title">@item.Title</h6>
-                            <p class="card-text">@item.Description</p>                            
-                            <a id="btnRemoveFromPlaylist" class="btn btn-sm btn-info" asp-action="RemoveVideoFromPlaylist">Remove From Playlist</a>
+                            <p class="card-text">@item.Description</p>
+                            @{ 
+                                var btnRemoveParams = new Dictionary<string, string>
+                                    {
+                                        { "videoId", item.Id },
+                                        { "playlistId", Model.Id.ToString() }
+                                    };
+                            }
+                            <a id="btnRemoveFromPlaylist" class="btn btn-sm btn-info" 
+                                asp-action="RemoveVideoFromPlaylist"
+                                asp-all-route-data="btnRemoveParams">Remove From Playlist</a>
                             <a href="https://www.youtube.com/watch?v=@item.Id" target="_blank" class="btn btn-sm btn-info">Watch on Youtube</a>
-
                         </div>
                     </div>
                 </div>
