@@ -16,26 +16,31 @@ namespace Api.Controllers
         {
             this.service = service;
         }
+
         public async Task<IActionResult> PlaylistDetail(int id)
         {            
             var playlist = await service.PlaylistVideosById(id);
             return View(playlist);
         }
+
         public async Task<IActionResult> Index()
         {
             var playlists = await service.PlaylistList();
             return View(playlists);
         }
+
         public async Task<IActionResult> VideoDel(int id)
         {
             await service.VideoDel(id);
             return RedirectToAction("Index");
         }
+
         public async Task<IActionResult> PlaylistDel(int id)
         {
             await service.PlaylistDel(id);
             return RedirectToAction("Index");
         }
+
         public async Task<IActionResult> PlaylistSave(Playlist playlist)
         {
             if (playlist.Id > 0)
@@ -48,10 +53,16 @@ namespace Api.Controllers
             }
             return RedirectToAction("Index");
         }
+
         public async Task<IActionResult> PlaylistEdit(int id)
         {            
             var playlist = await service.PlaylistById(id) ?? new Playlist();
             return View(playlist);
         }        
+
+        public IActionResult RemoveVideoFromPlaylist()
+        {
+            return RedirectToAction("Index");
+        }
     }
 }
