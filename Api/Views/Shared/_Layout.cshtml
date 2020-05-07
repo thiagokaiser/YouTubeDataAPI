@@ -17,7 +17,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">                        
+                    <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Playlist" asp-action="Index">Playlists</a>
                         </li>
@@ -29,6 +29,9 @@
             </div>
         </nav>
     </header>
+
+    <partial name="Message" />
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

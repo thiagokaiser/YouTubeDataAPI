@@ -35,8 +35,8 @@ namespace Infrastructure.Repositories
             {
                 var query = @"
                     SELECT * FROM playlist 
-                    INNER JOIN videoplaylist ON videoplaylist.playlistid = playlist.id 
-                    INNER JOIN video ON video.id = videoplaylist.videoid
+                    LEFT JOIN videoplaylist ON videoplaylist.playlistid = playlist.id 
+                    LEFT JOIN video ON video.id = videoplaylist.videoid
                     WHERE playlist.id = @Id;
                     ";
 
@@ -54,9 +54,9 @@ namespace Infrastructure.Repositories
                         var combinedPlaylist = group.First();
                         combinedPlaylist.Videos = group.Select(playlist => playlist.Videos.Single()).ToList();
                         return combinedPlaylist;
-                    });
+                    });                
 
-                return grouped.First();
+                return grouped.First();                
             }
         }
 

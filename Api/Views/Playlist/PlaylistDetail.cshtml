@@ -9,7 +9,7 @@
 @Model.Description
 <p></p>
 <div>
-    @if (Model.Videos?.Count > 0)
+    @if (Model.Videos?.Count > 0 && Model.Videos.First().Id != null)
     {
         @foreach (var item in Model.Videos)
         {

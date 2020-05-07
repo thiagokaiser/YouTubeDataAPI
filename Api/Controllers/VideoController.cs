@@ -63,7 +63,14 @@ namespace YouTubeDataAPI.Controllers
 
         public async Task<IActionResult> AddVideoToPlaylist(string videoId, string valorSelect)
         {
-            await service.AddVideoToPlaylist(new VideoPlaylistViewModel() { VideoId = videoId, PlaylistId = Int32.Parse(valorSelect) });
+            try
+            {
+                await service.AddVideoToPlaylist(new VideoPlaylistViewModel() { VideoId = videoId, PlaylistId = Int32.Parse(valorSelect) });
+            }
+            catch (Exception ex)
+            {                
+                TempData["Message"] = ex.Message;
+            }            
             return RedirectToAction("Index");
         }        
     }

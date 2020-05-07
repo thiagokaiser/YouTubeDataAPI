@@ -80,29 +80,24 @@ namespace Core.Services
             listRequest.RegionCode = "BR";
             listRequest.RelevanceLanguage = "PT-BR";
             listRequest.Type = "video";
-            listRequest.MaxResults = 10;
+            listRequest.MaxResults = 10;            
 
             SearchListResponse searchResponse = listRequest.Execute();
 
             List<Models.Video> videos = new List<Models.Video>();
 
             foreach (SearchResult searchResult in searchResponse.Items)
-            {
-                switch (searchResult.Id.Kind)
-                {
-                    case "youtube#video":
-                        var video = new Models.Video()
-                            {
-                                Id = searchResult.Id.VideoId,
-                                Title = searchResult.Snippet.Title,
-                                Description = searchResult.Snippet.Description,
-                                Url = searchResult.Snippet.Thumbnails.Medium.Url
-                            };
+            {                
+                var video = new Models.Video()
+                    {
+                        Id = searchResult.Id.VideoId,
+                        Title = searchResult.Snippet.Title,
+                        Description = searchResult.Snippet.Description,
+                        Url = searchResult.Snippet.Thumbnails.Medium.Url
+                    };
 
-                        videos.Add(video);
-                        await SaveVideo(video);
-                        break;
-                }
+                videos.Add(video);
+                await SaveVideo(video);                
             }
             return await LoadPlaylistsInVideo(videos);
         }

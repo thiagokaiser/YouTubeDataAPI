@@ -115,14 +115,21 @@ namespace Infrastructure.Repositories
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {
                 await conexao.ExecuteAsync("DELETE FROM Video");
+                await conexao.ExecuteAsync("DELETE FROM VideoPlaylist");
             }
         }
 
-        public async Task AddVideoToPlaylist(VideoPlaylistViewModel videoPlaylistViewModel)
+        public async Task AddVideoToPlaylist(VideoPlaylistViewModel videoPlaylist)
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
             {
-                await conexao.ExecuteAsync("INSERT INTO VideoPlaylist(videoid, playlistid) VALUES(@VideoId, @PlaylistId)", videoPlaylistViewModel);
+                var result = await conexao.QueryFirstOrDefaultAsync<VideoPlaylist>(@"SELECT * FROM videoplaylist 
+                                                                                     WHERE videoId = @VideoId AND playlistid = @PlaylistId", videoPlaylist);
+                if (result != null)
+                {
+                    throw new Exception("Relacionamento já existe");
+                }
+                await conexao.ExecuteAsync("INSERT INTO VideoPlaylist(videoid, playlistid) VALUES(@VideoId, @PlaylistId)", videoPlaylist);
             }
         }
     }
