@@ -51,7 +51,11 @@ namespace YouTubeDataAPI.Controllers
 
         public async Task<IActionResult> VideoSaved()
         {
+            var playlists = await playlistService.PlaylistList();
             var videos = await service.VideoList();
+
+            ViewBag.playlists = playlists.Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Title }).ToList();
+            
             return View(videos);
         }
 

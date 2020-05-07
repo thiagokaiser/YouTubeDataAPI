@@ -56,8 +56,7 @@
             <form asp-action="AddVideoToPlaylist">
                 <div class="modal-body">
 
-                    <input readonly asp-for="@videoId" />
-                    <p></p>
+                    <input type="hidden" readonly asp-for="@videoId" />                    
                     <select asp-for="@valorSelect" asp-items="@ViewBag.playlists">
                     </select>
 
