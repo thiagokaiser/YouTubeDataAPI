@@ -85,6 +85,8 @@ namespace Infrastructure.Repositories
             {
                 var playlist = await conexao.ExecuteAsync(@"DELETE FROM Playlist                                                          
                                                              WHERE id = @Id", new { Id = id });
+                var videoPlaylist = await conexao.ExecuteAsync(@"DELETE FROM VideoPlaylist                                                          
+                                                             WHERE playlistid = @Id", new { Id = id });
             }
         }
 

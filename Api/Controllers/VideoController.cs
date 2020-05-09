@@ -22,18 +22,11 @@ namespace YouTubeDataAPI.Controllers
             this.service = service;
             this.playlistService = playlistService;
         }
-
+                
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchText, string pageToken)
         {
-            var videos = new List<Video>();            
-            return View(videos);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Index(string searchText)
-        {            
-            var videos = await service.Search(searchText);
+            var videos = await service.Search(searchText, pageToken);
             var playlists = await playlistService.PlaylistList();
             
             ViewBag.playlists = playlists.Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Title }).ToList();

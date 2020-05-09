@@ -1,21 +1,25 @@
-﻿@model IEnumerable<Core.Models.Video>
+﻿@model Core.ViewModels.SearchResultViewModel
 @{
     ViewData["Title"] = "Home Page";
     var searchText = ViewBag.searchText;
+    var nextToken = Model.nextPageToken;
+    var prevToken = Model.prevPageToken;
     var valorSelect = "";
     string videoId = "";
 }
 
-<div class="text-center">
-    <h3 class="">YouTube Search</h3>
-    <form action="" method="post">
-        <input asp-for="@searchText" class="input-group-lg" />
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
+<h3 class="text-center">YouTube Search</h3>
+<div class="d-flex justify-content-center">    
+    <div class="input-group" style="max-width:400px">
+        <input asp-for="@searchText" class="form-control" />            
+        <div class="input-group-append">
+            <button id="btnSearch" type="button" class="btn btn-info">Search</button>                
+        </div>
+    </div>
 </div>
 <p></p>
 <div>
-    @foreach (var item in Model)
+    @foreach (var item in Model.Videos)
     {
         <div class="card w-100">
             <div class="card-body">
@@ -42,6 +46,13 @@
         </div>
     }
 </div>
+<div class="text-center">
+    <div class="btn-group" role="group">
+        <button type="button" id="btnPrevPage" class="btn btn-outline-info"
+                disabled="@(prevToken == null ? "disabled" : null)">Prev</button>
+        <button type="button" id="btnNextPage" class="btn btn-outline-info">Next</button>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -56,7 +67,7 @@
             <form asp-action="AddVideoToPlaylist">
                 <div class="modal-body">
 
-                    <input type="hidden" readonly asp-for="@videoId" />                    
+                    <input type="hidden" readonly asp-for="@videoId" />
                     <select asp-for="@valorSelect" asp-items="@ViewBag.playlists">
                     </select>
 
@@ -71,8 +82,25 @@
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script>    
-    $(".btnAddPlaylist").click(function (e) {        
+<script>
+    $(".btnAddPlaylist").click(function (e) {
         $("#videoId").val($(this).data("value"));
     });
+
+    $("#btnPrevPage").click(function (e) {
+        location.href = 'https://localhost:44370/?searchText=@searchText&pageToken=@prevToken';
+    });
+
+    $("#btnNextPage").click(function (e) {
+        location.href = 'https://localhost:44370/?searchText=@searchText&pageToken=@nextToken';
+    });
+
+    $("#btnSearch").click(function (e) {
+        let search = $('#searchText').val();
+        location.href = 'https://localhost:44370/?searchText=' + search;
+    });
+
+
+
+
 </script>

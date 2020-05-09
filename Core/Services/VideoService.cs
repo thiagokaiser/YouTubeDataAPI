@@ -70,7 +70,7 @@ namespace Core.Services
             await repository.AddVideoToPlaylist(videoPlaylistViewModel);
         }
 
-        public async Task<IEnumerable<Models.Video>> Search(string searchText)
+        public async Task<SearchResultViewModel> Search(string searchText, string pageToken)
         {
             SearchResource.ListRequest listRequest = youTubeDataApiService.Search.List("snippet");
 
@@ -80,9 +80,11 @@ namespace Core.Services
             listRequest.RegionCode = "BR";
             listRequest.RelevanceLanguage = "PT-BR";
             listRequest.Type = "video";
-            listRequest.MaxResults = 10;            
+            listRequest.MaxResults = 10;
+            listRequest.PageToken = pageToken;
 
             SearchListResponse searchResponse = listRequest.Execute();
+            
 
             List<Models.Video> videos = new List<Models.Video>();
 
@@ -99,7 +101,12 @@ namespace Core.Services
                 videos.Add(video);
                 await SaveVideo(video);                
             }
-            return await LoadPlaylistsInVideo(videos);
+            return new SearchResultViewModel()
+            {
+                nextPageToken = searchResponse.NextPageToken,
+                prevPageToken = searchResponse.PrevPageToken,
+                Videos = await LoadPlaylistsInVideo(videos)
+            };                
         }
 
         private async Task<IEnumerable<Models.Video>> LoadPlaylistsInVideo(IEnumerable<Models.Video> videos)
