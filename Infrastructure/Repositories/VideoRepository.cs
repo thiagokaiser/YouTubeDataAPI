@@ -132,5 +132,14 @@ namespace Infrastructure.Repositories
                 await conexao.ExecuteAsync("INSERT INTO VideoPlaylist(videoid, playlistid) VALUES(@VideoId, @PlaylistId)", videoPlaylist);
             }
         }
+
+        public async Task<IEnumerable<Playlist>> PlaylistList()
+        {
+            using (NpgsqlConnection conexao = new NpgsqlConnection(connectionString))
+            {
+                var playlists = await conexao.QueryAsync<Playlist>("SELECT * FROM Playlist");
+                return playlists;
+            }
+        }
     }
 }

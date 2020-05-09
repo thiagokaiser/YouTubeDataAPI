@@ -14,48 +14,41 @@ namespace YouTubeDataAPI.Controllers
 {
     public class VideoController : Controller
     {        
-        private readonly VideoService service;        
-        private readonly PlaylistService playlistService;
+        private readonly VideoService service;                
 
-        public VideoController(VideoService service, PlaylistService playlistService)
+        public VideoController(VideoService service)
         {                        
-            this.service = service;
-            this.playlistService = playlistService;
+            this.service = service;            
         }
                 
         [HttpGet]
         public async Task<IActionResult> Index(string searchText, string pageToken)
         {
-            var videos = await service.Search(searchText, pageToken);
-            var playlists = await playlistService.PlaylistList();
+            var videos = await service.Search(searchText, pageToken);            
             
-            ViewBag.playlists = playlists.Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Title }).ToList();
+            ViewBag.playlists = videos.Playlists.Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Title }).ToList();
             ViewBag.searchText = searchText;
 
             return View(videos); 
         }
 
         [HttpGet]
-        public async Task<IActionResult> VideoDetail()
+        public async Task<IActionResult> VideoDetail(string videoId)
         {
-            var videos = await service.VideoDetailById("UT66HeAptww");
-            return Ok(videos);
+            var videos = await service.VideoDetailById(videoId);
+            return View(videos);
         }
 
         public async Task<IActionResult> VideoSaved()
-        {
-            var playlists = await playlistService.PlaylistList();
-            var videos = await service.VideoList();
-
-            ViewBag.playlists = playlists.Select(a => new SelectListItem() { Value = a.Id.ToString(), Text = a.Title }).ToList();
-            
+        {            
+            var videos = await service.VideoList();            
             return View(videos);
         }
 
         public async Task<IActionResult> VideoDelAll()
         {
             await service.VideoDelAll();
-            return RedirectToAction("Index");
+            return RedirectToAction("VideoSaved");
         }
 
         public async Task<IActionResult> AddVideoToPlaylist(string videoId, string valorSelect)
@@ -68,7 +61,7 @@ namespace YouTubeDataAPI.Controllers
             {                
                 TempData["Message"] = ex.Message;
             }            
-            return RedirectToAction("Index");
+            return RedirectToAction("PlaylistDetail", "Playlist", new { id = Int32.Parse(valorSelect) });            
         }        
     }
 }

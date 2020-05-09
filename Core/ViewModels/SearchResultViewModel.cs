@@ -10,5 +10,6 @@ namespace Core.ViewModels
         public string nextPageToken { get; set; }
         public string prevPageToken { get; set; }
         public IEnumerable<Video> Videos { get; set; }
+        public IEnumerable<Playlist> Playlists { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace Api.Controllers
         public async Task<IActionResult> RemoveVideoFromPlaylist(string videoId, int playlistId)
         {
             await service.RemoveVideoFromPlaylist(new VideoPlaylistViewModel() { PlaylistId = playlistId, VideoId = videoId });
-            return RedirectToAction("Index");
+            return RedirectToAction("PlaylistDetail", new { id = playlistId });
         }
     }
 }

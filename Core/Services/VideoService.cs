@@ -83,8 +83,7 @@ namespace Core.Services
             listRequest.MaxResults = 10;
             listRequest.PageToken = pageToken;
 
-            SearchListResponse searchResponse = listRequest.Execute();
-            
+            SearchListResponse searchResponse = listRequest.Execute();           
 
             List<Models.Video> videos = new List<Models.Video>();
 
@@ -105,7 +104,8 @@ namespace Core.Services
             {
                 nextPageToken = searchResponse.NextPageToken,
                 prevPageToken = searchResponse.PrevPageToken,
-                Videos = await LoadPlaylistsInVideo(videos)
+                Videos = await LoadPlaylistsInVideo(videos),
+                Playlists = await repository.PlaylistList()
             };                
         }
 
